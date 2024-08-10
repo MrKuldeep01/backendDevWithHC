@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
-import envConfig from "../config/envConfig.js";
+import app from "./app.js"
 import connnectDB from "./db/index.js";
 import dotenv from "dotenv"
+import envConfig from "../config/envConfig.js";
 dotenv.config()
-
-// "dev": "npx nodemon -r dotenv/config --experimental-json-modules src/index.js"
+const port = envConfig.port || 3000;
+//in packege.json file => "dev": "npx nodemon -r dotenv/config --experimental-json-modules src/index.js"
 
 /*
 -r  flag is used for require, in this we are using this for pre loading the packege dotenv and config it to make availabe all environment variable from .env into process.env
@@ -16,17 +16,25 @@ Like this, .json file are not allowed to import with import syntax we need to gi
 
 */
 
-import abc from "./abc.json" assert {type:"json"}
-console.log(abc,"okay")
-
-connnectDB();
+// every async func always return a promise and we can handle as :
+connnectDB().then(()=>{
+app.on("error",(err)=>{
+  console.log("ERROR : in communication to DB :: ",err);
+})
+app.listen(port,()=>{
+  console.log("app is listening on ", port);
+})
+}).catch((err)=>{
+  console.log("ERROR : mongodb connection failed :: ",err);
+  process.exit(1);
+})
 
 
 
 
 
 /*
-// first way is iffi
+// first way is IIFE [ Imediatly Invoked Function Expression ]
 
 import express from "express"
 const app = express()
