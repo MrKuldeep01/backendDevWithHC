@@ -65,10 +65,7 @@ userSchema.methods.isPasswordOk = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-/* 
-jwt setup need some env variable like : secrate key, expiring date etc.
-
-*/
+/* jwt setup need some env variable like : secrate key, expiring date etc. */
 
 userSchema.methods.generateAccessToken = async function () {
   jwt.sign(
@@ -84,6 +81,7 @@ userSchema.methods.generateAccessToken = async function () {
     }
   );
 };
+
 userSchema.methods.generateRefreshToken = async function () {
   jwt.sign(
     {
