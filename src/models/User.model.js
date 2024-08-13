@@ -1,6 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
-import jwt from "jsonwebtoken"
-import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import envConfig from "../../config/envConfig";
 const userSchema = new Schema(
   {
     username: {
@@ -26,11 +27,11 @@ const userSchema = new Schema(
       index: true,
     },
     avatar: {
-      type: String,  //cloudnery url
+      type: String, //cloudnery url
       required: true,
     },
     coverImg: {
-      type: String,    
+      type: String,
     },
     password: {
       type: String,
@@ -46,8 +47,53 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-userSchema.pre("save",async function(next){
-    this.password = bcrypt.hash(this.password,12)
-    next()
-})
+userSchema.pre("save", async function (next) {
+  if (this.isModified("password")) return next();
+
+  this.password = bcrypt.hash(this.password, 12);
+  next();
+});
+
+// adding custom methods in mongodb schema =========
+// syntax
+// userSchema.methods.methodName()=>{}
+
+userSchema.methods.isPasswordOk = async function (password) {
+  /*  
+  for comparing the password with hash that is stored in db first is actual String password passed by the user and second is the hash saved in the data base.
+  bcrypt.compare("password", sdghkfegnxcchjsrtfvnserfhzdjdfudcjdfu )*/
+  return await bcrypt.compare(password, this.password);
+};
+
+/* 
+jwt setup need some env variable like : secrate key, expiring date etc.
+
+*/
+
+userSchema.methods.generateAccessToken = async function () {
+  jwt.sign(
+    {
+      _id: this._id,
+      username: this.username,
+      fullName: this.fullName,
+      email: this.email,
+    },
+    envConfig.accessTokenPrivateKey,
+    {
+      expiresIn: envConfig.accessTokenExpiry,
+    }
+  );
+};
+userSchema.methods.generateRefreshToken = async function () {
+  jwt.sign(
+    {
+      _id: this._id,
+    },
+    envConfig.refreshTokenPrivateKey,
+    {
+      expiresIn: envConfig.refreshTokenExpiry,
+    }
+  );
+};
+
 export default mongoose.model("User", userSchema);
