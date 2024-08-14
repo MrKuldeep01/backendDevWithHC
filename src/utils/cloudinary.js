@@ -5,7 +5,6 @@ import fs from "fs";
 async function cloudinaryUploader(fileLink) {
   try {
     if (!fileLink) return null;
-
     // upload the file on cloudinary
     const uploadFile = await cloudinary.uploader.upload(fileLink, {
       resource_type: "auto",
