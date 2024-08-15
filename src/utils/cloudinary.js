@@ -1,11 +1,11 @@
-import envConfig from "../../config/envConfig";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import envConfig from "../../config/envConfig.js";
 
 cloudinary.config({
   cloud_name: envConfig.cloudinaryName,
   api_key: envConfig.cloudinaryApiKey,
-  api_secret: envConfig.cloudinaryApiSecret, // Click 'View API Keys' above to copy your API secret
+  api_secret: envConfig.cloudinaryApiSecret,
 });
 
 
@@ -25,4 +25,5 @@ async function cloudinaryUploader(fileLink) {
   }
 }
 
+export default cloudinaryUploader;
 
