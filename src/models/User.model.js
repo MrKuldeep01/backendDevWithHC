@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import envConfig from "../../config/envConfig";
+import envConfig from "../../config/envConfig.js";
 const userSchema = new Schema(
   {
     username: {
@@ -40,10 +40,10 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
-    watchHistory: {
+    watchHistory: [{
       type: Schema.Types.ObjectId,
       ref: "Video",
-    },
+    }],
   },
   { timestamps: true }
 );

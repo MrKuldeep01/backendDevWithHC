@@ -22,7 +22,7 @@ app.on("error",(err)=>{
   console.log("ERROR : in communication to DB :: ",err);
 })
 app.listen(port,()=>{
-  console.log("app is listening on ", port);
+  console.log(`app is listening on http://localhost:${port}/`);
 })
 }).catch((err)=>{
   console.log("ERROR : mongodb connection failed :: ",err);

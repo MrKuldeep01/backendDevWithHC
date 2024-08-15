@@ -2,6 +2,13 @@ import envConfig from "../../config/envConfig";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 
+cloudinary.config({
+  cloud_name: envConfig.cloudinaryName,
+  api_key: envConfig.cloudinaryApiKey,
+  api_secret: envConfig.cloudinaryApiSecret, // Click 'View API Keys' above to copy your API secret
+});
+
+
 async function cloudinaryUploader(fileLink) {
   try {
     if (!fileLink) return null;
@@ -18,8 +25,4 @@ async function cloudinaryUploader(fileLink) {
   }
 }
 
-cloudinary.config({
-  cloud_name: envConfig.cloudinaryName,
-  api_key: envConfig.cloudinaryApiKey,
-  api_secret: envConfig.cloudinaryApiSecret, // Click 'View API Keys' above to copy your API secret
-});
+

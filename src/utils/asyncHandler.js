@@ -5,7 +5,7 @@
 //     } catch (error) {
 //         console.log("error");
 //         res.status(error.code || 501).json({
-//             message:"kuch to gdbd he dya",
+//             message:"kuch to gdbd he dya !",
 //             seccess:false,
 //             error:error
 //         })
