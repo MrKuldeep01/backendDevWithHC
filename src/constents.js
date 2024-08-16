@@ -1,3 +1,3 @@
-const dbname = "testingOne"
+const dbname = "backendWithHC"
 
 export default {dbname , }

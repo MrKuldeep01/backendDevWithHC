@@ -5,7 +5,6 @@ import envConfig from "../config/envConfig.js";
 dotenv.config()
 const port = envConfig.port || 3000;
 //in packege.json file => "dev": "npx nodemon -r dotenv/config --experimental-json-modules src/index.js"
-
 /*
 -r  flag is used for require, in this we are using this for pre loading the packege dotenv and config it to make availabe all environment variable from .env into process.env
 ===
