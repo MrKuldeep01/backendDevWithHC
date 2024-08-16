@@ -8,6 +8,4 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-
-console.log("storage from multer.middelware.js :: ", storage);
 export const upload = multer({ storage });
