@@ -4,6 +4,18 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import cloudinaryUploader from "../utils/cloudinary.js";
 
+/*
+steps to register new user : 
+- get details from the user
+- validate the details - if empty or other
+- check user if already or new
+- check image and avatar and upload to cloudinary
+- create user object - create entry in DB
+- check for user creation
+- remove the password and refreshToken from the user object and send this as a response.
+- return response
+*/
+
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, fullName, password } = req.body;
 
@@ -80,16 +92,24 @@ const registerUser = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, savedUser, "user registered successfully"));
 });
-export default registerUser;
+
 
 /*
-steps to register new user : 
-# get details from the user
-# validate the details - if empty or other
-# check user if already or new
-# check image and avatar and upload to cloudinary
-# create user object - create entry in DB
-# check for user creation
-# return response
+**steps to login a user :** 
+- get details from the user
+- validate the details - if empty or other
+- check user if already or new
+- if yes :- compair the password and username fields; else :- Throw Error 
+- respond as program say true :- set Tokens ; else :- reject the request 
+
+- check for user creation
+- return response
 */
+
+const loginUser = asyncHandler( async (req, res) => {
+
+})
+
+export { registerUser,loginUser };
+
 
