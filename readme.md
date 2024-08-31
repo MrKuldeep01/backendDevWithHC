@@ -9,9 +9,21 @@
 #### Cloudinary setup
 #### Multer setup
 #### User Register controller with best practice
-
-
+#### User Login functioning 
+#### User Logout functioning
 ```
+
+
+```js
+serverStatusCode = {
+    "informational":" 1 - ** ",
+    "success" : " 200 - 2** ",
+    "redirection" : " 300 - 3** ",
+    "clientError" : " 400 - 4** ",
+    "serverError" : " 500 - 5** "
+}
+```
+
 **steps to register new user:** 
 - get details from the user
 - validate the details - if empty or other
@@ -21,12 +33,18 @@
 - check for user creation
 - return response
 ```
-```js
-serverStatusCode = {
-    "informational":"1-99",
-    "success" : "200-299",
-    "redirection" : "300-399",
-    "clientError" : "400-499",
-    "serverError" : "500-599"
-}
-```
+
+**steps to login a user :** 
+- get details from the user
+- validate the details - if empty or other
+- check user if already or new
+- if yes :- compair the password and username fields; else :- Throw Error 
+- respond as program say true :- set Tokens ; else :- reject the request 
+
+- check for user creation
+- return response
+
+**steps to logout a user :** 
+- remove the refreshToken from db
+- empty out the cookies for accessToken and refreshTokens
+- and all set...
