@@ -11,6 +11,7 @@
 #### User Register controller with best practice
 #### User Login functioning 
 #### User Logout functioning
+#### Refreshing tokens with the help of refreshToken
 ```
 
 
@@ -43,6 +44,7 @@ serverStatusCode = {
 
 - check for user creation
 - return response
+
 
 **steps to logout a user :** 
 - remove the refreshToken from db
