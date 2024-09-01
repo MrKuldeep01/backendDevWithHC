@@ -149,7 +149,7 @@ const loginUser = asyncHandler(async (req, res) => {
     .user(logedinUser)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(201, "success flag is true", logedinUser));
+    .json(new ApiResponse(201, "login is done properly.", {user:logedinUser, refreshToken, accessToken}));
 });
 
 /*
@@ -162,30 +162,6 @@ const loginUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
 
   // ------ wrong code for now 
-  const refreshToken = await req.cookies("refreshToken");
-  const verifyRefreshToken = () => {
-    jwt.verify(
-      refreshToken,
-      envConfig.refreshTokenPrivateKey,
-      function (err, data) {
-        if(!err) return data;
-      }
-    );
-  };
-  const { _id } = await verifyRefreshToken();
-  const currentUser = await userModel.findById(_id);
-  currentUser.refreshToken = null;
-  const { username } = currentUser;
-  await currentUser.save();
-  const options = {
-    httpOnly: true,
-    secure: true
-  }
-  res
-    .status(204)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
-    .json(new ApiResponse(204, "logout successfully", {}));
-});
+})
 
 export { registerUser, loginUser };
