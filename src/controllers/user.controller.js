@@ -144,12 +144,18 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
-  res
+  return res
     .status(200)
     .user(logedinUser)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(201, "login is done properly.", {user:logedinUser, refreshToken, accessToken}));
+    .json(
+      new ApiResponse(201, "login is done properly.", {
+        user: logedinUser,
+        refreshToken,
+        accessToken,
+      })
+    );
 });
 
 /*
@@ -160,8 +166,28 @@ const loginUser = asyncHandler(async (req, res) => {
 */
 
 const logoutUser = asyncHandler(async (req, res) => {
+  const user = req.user;
+  await userModel.findByIdAndUpdate(
+    user?._id,
+    {
+      $set: {
+        refreshToken: undefined,
+      },
+    },
+    {
+      new: true,
+    }
+  );
 
-  // ------ wrong code for now 
-})
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, "successfully logout", {}));
+});
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, logoutUser };
