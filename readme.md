@@ -4,14 +4,20 @@
 #### Data modeling 
 #### Mongo DB connection
 #### Env & git file setup [ gitignore & gitkeep ]
-#### 
+#### Adding methodes in Schema
 #### Bcrypt & JWT setup
 #### Cloudinary setup
 #### Multer setup
+
+### **Controllers**
 #### User Register controller with best practice
 #### User Login functioning 
 #### User Logout functioning
 #### Refreshing tokens with the help of refreshToken
+#### Changing password
+#### Getting current user 
+
+#### Subscription model
 ```
 
 

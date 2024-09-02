@@ -256,21 +256,58 @@ const changePassword = asyncHandler(async (req, res) => {
     throw new ApiError(401, "invalid password");
   }
   user.password = newPassword;
-  await user.save({validateBeforeSave: false});
+  await user.save({ validateBeforeSave: false });
   return res
     .status(200)
     .json(new ApiResponse(200, "password changed successfully.", {}));
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  const user = await userModel
-    .findById(req.user._id)
-    .select("-password -refreshToken");
+  // const user = req.user
   return res
     .status(200)
-    .json(new ApiResponse(200, "current user found successfully.", user));
+    .json(new ApiResponse(200, "current user found successfully.", req.user));
 });
 
+const updateUserTextInfo = asyncHandler(async (req, res) => {
+  // something is wrong here========================================
+  // user
+  // info in
+  // validate info
+  // overwrite info
+  // save to the database
+  // res send to okay
+
+  const user = await userModel.findById(req.user._id);
+
+  const { email, fullName } = req.body;
+
+  if (!email && !fullName) {
+    throw new ApiError(
+      400,
+      "Please provide proper details to update the fullname or email! "
+    );
+  }
+  const newFullName = fullName || user.fullName;
+
+  if (email && email !== user.email) {
+    const checkForExistingUser = await userModel.find({ email });
+    if (checkForExistingUser) {
+      throw new ApiError(
+        409,
+        "Given email is used by someone on this platform!"
+      );
+    }
+    user.email = email;
+    user.fullName = newFullName;
+    await user.save({ validateBeforeSave: false });
+  }
+  user.fullName = newFullName;
+  await user.save({ validateBeforeSave: false });
+  return res
+    .status(200)
+    .json(new ApiResponse(202, "details are updated successfully."));
+});
 
 export {
   registerUser,
@@ -278,5 +315,5 @@ export {
   logoutUser,
   refreshAccessToken,
   changePassword,
-  getCurrentUser
+  getCurrentUser,
 };

@@ -27,16 +27,16 @@ const userSchema = new Schema(
       trim: true,
       index: true,
     },
+    password: {
+      type: String,
+      required: [true, "password is required !!!"],
+    },
     avatar: {
       type: String, //cloudnery url
       required: true,
     },
     coverImg: {
       type: String,
-    },
-    password: {
-      type: String,
-      required: [true, "password is required !!!"],
     },
     refreshToken: {
       type: String,
