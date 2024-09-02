@@ -221,7 +221,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       secure: true,
     };
     user?.refreshToken = newRefreshToken;
-    await user.save({validateBeforeSave: false})
+    await user.save({ validateBeforeSave: false });
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
@@ -233,8 +233,49 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         })
       );
   } catch (error) {
-    throw new ApiError(409, error?.message || "invalid refresh token ",error);
+    throw new ApiError(409, error?.message || "invalid refresh token ", error);
   }
 });
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken };
+const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  // // reset password without login
+  // if(!username && !email){
+  //   throw new ApiError(401,"please fill the form properly email or username")
+  // }
+  if (confirmPassword && confirmPassword !== newPassword) {
+    throw new ApiError(
+      401,
+      " please checkout confirm password and new password fields! "
+    );
+  }
+
+  const user = await userModel.findById(req.user._id);
+  const isPasswordCorrect = await user.isPasswordOk(oldPassword);
+  if (!isPasswordCorrect) {
+    throw new ApiError(401, "invalid password");
+  }
+  user.password = newPassword;
+  await user.save({validateBeforeSave: false});
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "password changed successfully.", {}));
+});
+
+const getCurrentUser = asyncHandler(async (req, res) => {
+  const user = await userModel
+    .findById(req.user._id)
+    .select("-password -refreshToken");
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "current user found successfully.", user));
+});
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  changePassword,
+  getCurrentUser
+};
